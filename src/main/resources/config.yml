@@ -1,0 +1,9 @@
+
+#
+# List of commands executed on ban (don't put a slash)
+#  Variables:
+#    %player% will be replaced with the username of the player
+#    %prefix%  will be replaced with the plugin prefix
+cmd-on-ban:
+  - "ban %player% %prefix% antikb"
+  - "say %player% has been banned for antikb/kbreducer"

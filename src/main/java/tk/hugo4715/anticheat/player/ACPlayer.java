@@ -1,5 +1,8 @@
 package tk.hugo4715.anticheat.player;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -34,7 +37,11 @@ public class ACPlayer {
 	public void onViolation() {
 		violations++;
 		if(violations > 2){
-			player.kickPlayer(KbPlus.PREFIX + " AntiKb");
+			List<String> cmds = KbPlus.get().getConfig().getStringList("cmd-on-ban");
+			cmds.forEach( cmd -> {
+				cmd = cmd.replace("%player%", player.getName()).replace("%prefix%", KbPlus.PREFIX);
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+			});
 			player.setBanned(true);
 		}
 	}

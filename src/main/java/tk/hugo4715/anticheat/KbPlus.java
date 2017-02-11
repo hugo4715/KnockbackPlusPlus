@@ -6,45 +6,67 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.inventivetalent.update.spiget.SpigetUpdate;
+import org.inventivetalent.update.spiget.UpdateCallback;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.google.common.collect.Sets;
 
 import net.md_5.bungee.api.ChatColor;
 import tk.hugo4715.anticheat.bstats.Metrics;
 import tk.hugo4715.anticheat.check.KbChecker;
 import tk.hugo4715.anticheat.player.ACPlayer;
+import tk.hugo4715.tinyprotocol.PacketHook;
 
 /**
- * TODO:
+ * DONE:
  *   - Auto updater
- *   - custom command on violations
+ *   - permission to bypass -> knockbackplusplus.bypass
+ *   - custom command on violations -> see config.yml
  * @author hugo4715
  *
  */
 public class KbPlus extends JavaPlugin {
 	public static final String PREFIX = ChatColor.GOLD + "[" + ChatColor.GREEN + "AntiCheat" + ChatColor.GOLD + "]" + ChatColor.GREEN;
 
-
 	private Set<ACPlayer> players = Sets.newHashSet();
-
 	private KbChecker kbChecker;
-
-
-	private ProtocolManager protocolManager;
-
-
-	private Metrics metrics;
+	private PacketHook packetHook;
 
 	@Override
 	public void onEnable() {
-		this.metrics = new Metrics(this);
-	    protocolManager = ProtocolLibrary.getProtocolManager();
-		kbChecker = new KbChecker();
+		Metrics metrics = new Metrics(this);
+		update();
+		saveDefaultConfig();
+		this.packetHook = new PacketHook(get());
+		this.kbChecker = new KbChecker();
 	}
 
 	
+	private void update() {
+		final SpigetUpdate updater = new SpigetUpdate(this, 12345);
+		updater.checkForUpdate(new UpdateCallback() {
+		    @Override
+		    public void updateAvailable(String newVersion, String downloadUrl, boolean hasDirectDownload) {
+		        // First check if there is a direct download available
+		        // (Either the resources is hosted on spigotmc.org, or Spiget has a cached version to download)
+		        // external downloads won't work if they are disabled (by default) in spiget.properties
+		        if (hasDirectDownload) {
+		            if (updater.downloadUpdate()) {
+		                // Update downloaded, will be loaded when the server restarts
+		            } else {
+		                // Update failed
+		                getLogger().warning("Update download failed, reason is " + updater.getFailReason());
+		            }
+		        }
+		    }
+
+		    @Override
+		    public void upToDate() {
+		    }
+		});
+	}
+
+
 	public KbChecker getChecker() {
 		return kbChecker;
 	}
@@ -53,8 +75,8 @@ public class KbPlus extends JavaPlugin {
 		return getACPlayer(p.getUniqueId());
 	}
 	
-	public ProtocolManager getProtocolManager() {
-		return protocolManager;
+	public PacketHook getPacketHook() {
+		return packetHook;
 	}
 
 	public ACPlayer getACPlayer(UUID id){
