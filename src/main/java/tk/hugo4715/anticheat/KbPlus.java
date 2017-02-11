@@ -43,7 +43,7 @@ public class KbPlus extends JavaPlugin {
 
 	
 	private void update() {
-		final SpigetUpdate updater = new SpigetUpdate(this, 12345);
+		final SpigetUpdate updater = new SpigetUpdate(this, 36140);
 		updater.checkForUpdate(new UpdateCallback() {
 		    @Override
 		    public void updateAvailable(String newVersion, String downloadUrl, boolean hasDirectDownload) {
@@ -62,6 +62,7 @@ public class KbPlus extends JavaPlugin {
 
 		    @Override
 		    public void upToDate() {
+		    	getLogger().info("Plugin is up to date");
 		    }
 		});
 	}

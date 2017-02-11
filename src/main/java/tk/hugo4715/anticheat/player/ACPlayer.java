@@ -36,7 +36,7 @@ public class ACPlayer {
 
 	public void onViolation() {
 		violations++;
-		if(violations > 2){
+		if(violations > 2 && player.isOnline() || !player.isBanned()){
 			List<String> cmds = KbPlus.get().getConfig().getStringList("cmd-on-ban");
 			cmds.forEach( cmd -> {
 				cmd = cmd.replace("%player%", player.getName()).replace("%prefix%", KbPlus.PREFIX);

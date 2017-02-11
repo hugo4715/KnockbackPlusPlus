@@ -79,7 +79,7 @@
 							<artifactSet>
 								<includes>
 									<include>tk.hugo4715.packethook</include>
-									<include>org.inventivetalent.update</include>
+									<include>org.inventivetalent.spiget-update</include>
 								</includes>
 							</artifactSet>
 						</configuration>
