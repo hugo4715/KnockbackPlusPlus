@@ -34,9 +34,11 @@ public class ACPlayer {
 		return player;
 	}
 
-	public void onViolation() {
-		violations++;
-		if(violations > 2 && player.isOnline() || !player.isBanned()){
+	public void onViolation(double percent) {
+		if(percent < 0)return;
+		
+		violations+=percent;
+		if(violations > 50 && player.isOnline() && !player.isBanned()){
 			List<String> cmds = KbPlus.get().getConfig().getStringList("cmd-on-ban");
 			cmds.forEach( cmd -> {
 				cmd = cmd.replace("%player%", player.getName()).replace("%prefix%", KbPlus.PREFIX);
@@ -47,7 +49,7 @@ public class ACPlayer {
 	}
 	
 	public void onLegit(){
-		violations --;
+		violations -= 5;
 		if(violations < 0)violations = 0;
 	}
 }
