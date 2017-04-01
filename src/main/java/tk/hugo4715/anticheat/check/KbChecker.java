@@ -2,6 +2,7 @@ package tk.hugo4715.anticheat.check;
 
 import org.apache.commons.lang.exception.NestableDelegate;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -43,7 +44,7 @@ public class KbChecker {
 						return;
 					}
 					//don't check if there is a ceiling
-					if(acp.hasCeiling() || !p.isOnGround() || p.isInsideVehicle())return;
+					if(acp.hasCeiling() || !p.isOnGround() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
 					//calculate y move 
 //					double yMove = velY / 8000.0;
 					double yMove = velY / 3100.0;

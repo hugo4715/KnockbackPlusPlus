@@ -7,3 +7,7 @@
 cmd-on-ban:
   - "ban %player% %prefix% antikb"
   - "say %player% has been banned for antikb/kbreducer"
+violation-lvl:
+  increase: 1
+  decrease: 0.5
+  max: 3

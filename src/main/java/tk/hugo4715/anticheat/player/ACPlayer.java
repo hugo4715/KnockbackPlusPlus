@@ -37,19 +37,25 @@ public class ACPlayer {
 	public void onViolation(double percent) {
 		if(percent < 0)return;
 		
-		violations+=percent;
-		if(violations > 50 && player.isOnline() && !player.isBanned()){
+		violations+= KbPlus.get().getConfig().getInt("violation-lvl.increase");
+		
+		if(violations >= KbPlus.get().getConfig().getInt("violation-lvl.max")){
+			sanction();
+		}
+	}
+	
+	public void sanction(){
+		if(player.isOnline()){
 			List<String> cmds = KbPlus.get().getConfig().getStringList("cmd-on-ban");
 			cmds.forEach( cmd -> {
 				cmd = cmd.replace("%player%", player.getName()).replace("%prefix%", KbPlus.PREFIX);
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 			});
-			player.setBanned(true);
 		}
 	}
 	
 	public void onLegit(){
-		violations -= 5;
+		violations -= KbPlus.get().getConfig().getInt("violation-lvl.decrease");
 		if(violations < 0)violations = 0;
 	}
 }
