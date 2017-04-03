@@ -5,8 +5,8 @@
 #    %player% will be replaced with the username of the player
 #    %prefix%  will be replaced with the plugin prefix
 cmd-on-ban:
-  - "ban %player% %prefix% antikb"
-  - "say %player% has been banned for antikb/kbreducer"
+  - "kick %player% This server is protected by KnockBackPlusPlus by Hugo4715"
+  - "say %player% has been kicked for antikb/kbreducer"
 violation-lvl:
   increase: 1
   decrease: 0.5

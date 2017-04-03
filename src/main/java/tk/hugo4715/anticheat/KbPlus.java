@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.update.spiget.SpigetUpdate;
 import org.inventivetalent.update.spiget.UpdateCallback;
+import org.inventivetalent.update.spiget.comparator.VersionComparator;
 
 import com.google.common.collect.Sets;
 
@@ -44,6 +45,7 @@ public class KbPlus extends JavaPlugin {
 	
 	private void update() {
 		final SpigetUpdate updater = new SpigetUpdate(this, 36140);
+		updater.setVersionComparator(VersionComparator.SEM_VER);
 		updater.checkForUpdate(new UpdateCallback() {
 		    @Override
 		    public void updateAvailable(String newVersion, String downloadUrl, boolean hasDirectDownload) {
