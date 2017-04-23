@@ -58,7 +58,7 @@ public class KbPlus extends JavaPlugin {
 			
 			@Override
 			public int getValue() {
-				return data.getInt("banned-players");
+				return data.getInt("violations");
 			}
 		});
 	}

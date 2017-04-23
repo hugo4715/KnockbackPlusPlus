@@ -4,7 +4,7 @@
   <groupId>tk.hugo4715.knockbackplusplus</groupId>
   <artifactId>knockbackplusplus</artifactId>
   <name>knockbackplusplus</name>
-  <version>1.3</version>
+  <version>1.4</version>
   <build>
     <plugins>
       <plugin>
