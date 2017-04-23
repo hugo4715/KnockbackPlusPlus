@@ -1,9 +1,13 @@
 package tk.hugo4715.anticheat;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.update.spiget.SpigetUpdate;
@@ -32,17 +36,62 @@ public class KbPlus extends JavaPlugin {
 	private Set<ACPlayer> players = Sets.newHashSet();
 	private KbChecker kbChecker;
 	private PacketHook packetHook;
-
+	
+	private File datafile;
+	private YamlConfiguration data;
+	
+	
 	@Override
 	public void onEnable() {
-		Metrics metrics = new Metrics(this);
+		
 		update();
 		saveDefaultConfig();
+		loadData();
 		this.packetHook = new PacketHook(get());
 		this.kbChecker = new KbChecker();
+		loadMetrics();
 	}
 
+	private void loadMetrics() {
+		Metrics metrics = new Metrics(this);
+		metrics.addCustomChart(new Metrics.SingleLineChart("violations") {
+			
+			@Override
+			public int getValue() {
+				return data.getInt("banned-players");
+			}
+		});
+	}
+
+
+	private void loadData() {
+		datafile = new File(getDataFolder(),"data.yml");
+		
+		if(datafile.exists()){
+			data = YamlConfiguration.loadConfiguration(datafile);
+		}else{
+			//create it
+			data = new YamlConfiguration();
+			data.set("violations", 0);
+			saveData();
+		}
+	}
 	
+	public YamlConfiguration getData() {
+		return data;
+	}
+	
+	public void saveData(){
+		Validate.notNull(datafile,"Tried to save data before loading it!");
+		try {
+			data.save(datafile);
+		} catch (IOException e) {
+			e.printStackTrace();
+			getLogger().severe("Could not save data.yml!");
+		}
+	}
+
+
 	private void update() {
 		final SpigetUpdate updater = new SpigetUpdate(this, 36140);
 		updater.setVersionComparator(VersionComparator.SEM_VER);

@@ -51,6 +51,9 @@ public class ACPlayer {
 				cmd = cmd.replace("%player%", player.getName()).replace("%prefix%", KbPlus.PREFIX);
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 			});
+			
+			KbPlus.get().getData().set("violations", KbPlus.get().getData().getInt("violations", 0)+1);
+			KbPlus.get().saveData();
 		}
 	}
 	
