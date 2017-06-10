@@ -3,6 +3,7 @@ package tk.hugo4715.anticheat.player;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -40,15 +41,16 @@ public class ACPlayer {
 		violations+= KbPlus.get().getConfig().getInt("violation-lvl.increase");
 		
 		if(violations >= KbPlus.get().getConfig().getInt("violation-lvl.max")){
-			sanction();
+			sanction(percent);
 		}
 	}
 	
-	public void sanction(){
+	public void sanction(double percent){
 		if(player.isOnline()){
 			List<String> cmds = KbPlus.get().getConfig().getStringList("cmd-on-ban");
 			cmds.forEach( cmd -> {
-				cmd = cmd.replace("%player%", player.getName()).replace("%prefix%", KbPlus.PREFIX);
+				cmd = cmd.replace("%player%", player.getName()).replace("%prefix%", KbPlus.PREFIX).replace("%kb%", Math.round(percent*100.0)+"");
+				cmd = ChatColor.translateAlternateColorCodes('&', cmd);
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 			});
 			

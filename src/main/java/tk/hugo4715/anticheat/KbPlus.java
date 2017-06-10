@@ -23,12 +23,7 @@ import tk.hugo4715.anticheat.player.ACPlayer;
 import tk.hugo4715.tinyprotocol.PacketHook;
 
 /**
- * DONE:
- *   - Auto updater
- *   - permission to bypass -> knockbackplusplus.bypass
- *   - custom command on violations -> see config.yml
  * @author hugo4715
- *
  */
 public class KbPlus extends JavaPlugin {
 	public static final String PREFIX = ChatColor.GOLD + "[" + ChatColor.GREEN + "AntiCheat" + ChatColor.GOLD + "]" + ChatColor.GREEN;
