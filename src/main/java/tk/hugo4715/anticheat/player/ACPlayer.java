@@ -5,6 +5,8 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
@@ -13,7 +15,9 @@ import tk.hugo4715.anticheat.KbPlus;
 public class ACPlayer {
 	private Player player;
 	
-	private int violations = 0;
+	public int violations = 0;
+
+	protected long lastReport;
 	
 	public ACPlayer(Player p) {
 		this.player = p;
@@ -35,6 +39,48 @@ public class ACPlayer {
 		return player;
 	}
 
+	public boolean isInWater(){
+		return player.getLocation().getBlock().isLiquid() || player.getLocation().clone().add(0, -1, 0).getBlock().isLiquid() || player.getLocation().clone().add(0, 1, 0).getBlock().isLiquid();
+	}
+	
+	public boolean isInWeb() {
+		boolean inWeb = false;
+
+		Location loc = player.getLocation().clone();
+		double x = loc.getX()-loc.getBlockX();
+		double z = loc.getZ()-loc.getBlockZ();
+
+		if(isWeb(loc.getBlock()))inWeb = true;
+		else if(x < 0.31 && isWeb(loc.getBlock().getRelative(BlockFace.WEST)))inWeb =  true;
+		else if(x > 0.69 && isWeb(loc.getBlock().getRelative(BlockFace.EAST)))inWeb = true;
+		else if(z < 0.31 && isWeb(loc.getBlock().getRelative(BlockFace.NORTH)))inWeb = true;
+		else if(z > 0.69 && isWeb(loc.getBlock().getRelative(BlockFace.SOUTH)))inWeb = true;
+		else if(x > 0.71 && z < 0.3 && isWeb(loc.getBlock().getRelative(BlockFace.EAST).getRelative(BlockFace.NORTH)))inWeb = true;
+		else if(x > 0.71 && z > 0.71 && isWeb(loc.getBlock().getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH)))inWeb = true;
+		else if(x < 0.31 && z > 0.71 && isWeb(loc.getBlock().getRelative(BlockFace.WEST).getRelative(BlockFace.SOUTH)))inWeb = true;
+		else if(x < 0.31 && z < 0.31 && isWeb(loc.getBlock().getRelative(BlockFace.WEST).getRelative(BlockFace.NORTH)))inWeb = true;
+
+		loc = player.getLocation().clone().add(0, 1, 0);
+		x = loc.getX()-loc.getBlockX();
+		z = loc.getZ()-loc.getBlockZ();
+
+		if(isWeb(loc.getBlock()))inWeb = true;
+		else if(x < 0.31 && isWeb(loc.getBlock().getRelative(BlockFace.WEST)))inWeb =  true;
+		else if(x > 0.69 && isWeb(loc.getBlock().getRelative(BlockFace.EAST)))inWeb = true;
+		else if(z < 0.31 && isWeb(loc.getBlock().getRelative(BlockFace.NORTH)))inWeb = true;
+		else if(z > 0.69 && isWeb(loc.getBlock().getRelative(BlockFace.SOUTH)))inWeb = true;
+		else if(x > 0.71 && z < 0.3 && isWeb(loc.getBlock().getRelative(BlockFace.EAST).getRelative(BlockFace.NORTH)))inWeb = true;
+		else if(x > 0.71 && z > 0.71 && isWeb(loc.getBlock().getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH)))inWeb = true;
+		else if(x < 0.31 && z > 0.71 && isWeb(loc.getBlock().getRelative(BlockFace.WEST).getRelative(BlockFace.SOUTH)))inWeb = true;
+		else if(x < 0.31 && z < 0.31 && isWeb(loc.getBlock().getRelative(BlockFace.WEST).getRelative(BlockFace.NORTH)))inWeb = true;
+
+		return inWeb;		
+	}
+	
+	private boolean isWeb(Block b){
+		return b.getType().equals(Material.WEB);
+	}
+	
 	public void onViolation(double percent) {
 		if(percent < 0)return;
 		

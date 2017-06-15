@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -13,9 +14,33 @@ import tk.hugo4715.tinyprotocol.event.PacketOutEvent;
 import tk.hugo4715.tinyprotocol.packet.PacketAccessor;
 
 public class KbChecker {
+	protected static final int REPORT_TIME = 12000;
 
 	public KbChecker() {
 		KbPlus.get().getPacketHook().getEventBus().register(this);
+		
+		if(KbPlus.get().getConfig().getBoolean("enable-random-checks",true)){
+			KbPlus.get().getLogger().info("Enabled random checks.");
+			new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					System.out.println("0");
+					for(ACPlayer gp : KbPlus.get().getPlayers()){
+						System.out.println("1");
+						double chance = 0.1;
+						if(gp.violations > 0){
+							chance = 1;
+						}
+						if(gp.getPlayer().isOnGround() && !gp.isInWater() && !gp.isInWeb() && Math.random() < chance){
+							KbPlus.get().getLogger().info("Checking " + gp.getPlayer().getName());
+
+							gp.getPlayer().setVelocity(new Vector(0,0.2,0));
+						}
+					}
+				}
+			}.runTaskTimer(KbPlus.get(), 20,20*5);
+		}
 	}
 	
 	@Subscribe
@@ -34,30 +59,36 @@ public class KbChecker {
 
 					ACPlayer acp = KbPlus.get().getACPlayer(p);
 
-					//don't check if there is a ceiling or anything that could block from taking kb
-					if(acp.hasCeiling() || !p.isOnGround() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
+					new BukkitRunnable() {
+						
+						@Override
+						public void run() {
+							//don't check if there is a ceiling or anything that could block from taking kb
+							if(acp.hasCeiling() || !p.isOnGround() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
 
-					
-					final int ticksToReact = (int) (1.5*20);//ticks for the client to get up
+							
+							final int ticksToReact = (int) (1.5*20);//ticks for the client to get up
 
-					if(velY < 5000){
-						//give client some time to react
-						new BukkitRunnable() {
-							private int iterations = 0;
-							double reachedY = 0;//dif reached
-							double baseY = p.getLocation().getY();
+							if(velY < 5000){
+								//give client some time to react
+								new BukkitRunnable() {
+									private int iterations = 0;
+									double reachedY = 0;//dif reached
+									double baseY = p.getLocation().getY();
 
-							@Override
-							public void run() {
-								iterations++;
-								if(p.getLocation().getY()-baseY > reachedY)reachedY = p.getLocation().getY()-baseY;
-								if(iterations > ticksToReact){
-									checkKnockback(acp,velY,reachedY);
-									cancel();
-								}
-							}
-						}.runTaskTimer(KbPlus.get(), 1, 1);
-					}
+									@Override
+									public void run() {
+										iterations++;
+										if(p.getLocation().getY()-baseY > reachedY)reachedY = p.getLocation().getY()-baseY;
+										if(iterations > ticksToReact){
+											checkKnockback(acp,velY,reachedY);
+											cancel();
+										}
+									}
+								}.runTaskTimer(KbPlus.get(), 1, 1);
+							}							
+						}
+					}.runTask(KbPlus.get());
 					return;
 				}
 			}
@@ -72,7 +103,7 @@ public class KbChecker {
 //			double predictedY = 0.0006 * packetY - 0.8253;
 			double predictedY = (0.00000008 * packetY * packetY) + (0.0001 * packetY)- 0.0219;
 			packetY -= 0.05;
-			if(predictedY < realY){
+			if(predictedY < realY || gp.getPlayer().hasPermission("knockbackplusplus.bypass")){
 				//legit
 				gp.onLegit();
 			}else{

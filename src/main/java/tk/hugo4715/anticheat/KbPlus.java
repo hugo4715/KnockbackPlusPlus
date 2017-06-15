@@ -76,6 +76,10 @@ public class KbPlus extends JavaPlugin {
 		return data;
 	}
 	
+	public Set<ACPlayer> getPlayers() {
+		return players;
+	}
+	
 	public void saveData(){
 		Validate.notNull(datafile,"Tried to save data before loading it!");
 		try {
