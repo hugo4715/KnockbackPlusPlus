@@ -32,9 +32,7 @@ public class KbChecker {
 						if(gp.violations > 0){
 							chance = 1;
 						}
-						if(gp.getPlayer().isOnGround() && !gp.isInWater() && !gp.isInWeb() && Math.random() < chance){
-							KbPlus.get().getLogger().info("Checking " + gp.getPlayer().getName());
-
+						if(gp.getPlayer().isOnGround() && !gp.isInWater() && !gp.isOnLadder() && !gp.isInWeb() && Math.random() < chance){
 							gp.getPlayer().setVelocity(new Vector(0,0.2,0));
 						}
 					}
@@ -65,7 +63,7 @@ public class KbChecker {
 						@Override
 						public void run() {
 							//don't check if there is a ceiling or anything that could block from taking kb
-							if(acp.hasCeiling() || !p.isOnGround() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || acp.isInWeb() || acp.isInWater() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
+							if(acp.hasCeiling() || !p.isOnGround() || acp.isOnLadder() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || acp.isInWeb() || acp.isInWater() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
 
 							
 							final int ticksToReact = (int) (1.5*20);//ticks for the client to get up

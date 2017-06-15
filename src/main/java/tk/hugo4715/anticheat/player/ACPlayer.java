@@ -77,6 +77,16 @@ public class ACPlayer {
 		return inWeb;		
 	}
 	
+	public boolean isOnLadder(){
+		Block loc = player.getLocation().getBlock();
+
+		return isClimbable(loc) || isClimbable(loc.getRelative(BlockFace.UP)) || isClimbable(loc.getRelative(BlockFace.DOWN));
+	}
+
+	private boolean isClimbable(Block b){
+		return b.getType().equals(Material.LADDER) || b.getType().equals(Material.VINE);
+	}
+	
 	private boolean isWeb(Block b){
 		return b.getType().equals(Material.WEB);
 	}
