@@ -7,6 +7,8 @@
 cmd-on-ban:
   - "kick %player% %prefix% \n &7This server is protected by &cKnockBackPlusPlus &7by &cHugo4715 \n &7You took %kb%% less knockback than normal."
   - "say %prefix% %player% was kicked for hacking"
+  
+check-time: 1.5
 enable-random-checks: true
 violation-lvl:
   increase: 1

@@ -66,7 +66,7 @@ public class KbChecker {
 							if(acp.hasCeiling() || !p.isOnGround() || acp.isOnLadder() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || acp.isInWeb() || acp.isInWater() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
 
 							
-							final int ticksToReact = (int) (1.5*20);//ticks for the client to get up
+							final int ticksToReact = (int) (KbPlus.get().getConfig().getDouble("check-time")*20);//ticks for the client to get up
 
 							if(velY < 5000){
 								//give client some time to react
