@@ -25,9 +25,7 @@ public class KbChecker {
 				
 				@Override
 				public void run() {
-					System.out.println("0");
 					for(ACPlayer gp : KbPlus.get().getPlayers()){
-						System.out.println("1");
 						double chance = 0.1;
 						if(gp.violations > 0){
 							chance = 1;
