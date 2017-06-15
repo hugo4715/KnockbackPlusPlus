@@ -58,13 +58,14 @@ public class KbChecker {
 				if(p.getEntityId() == entId){
 
 					ACPlayer acp = KbPlus.get().getACPlayer(p);
-
+					
+					//sync process in order to fix 
 					new BukkitRunnable() {
 						
 						@Override
 						public void run() {
 							//don't check if there is a ceiling or anything that could block from taking kb
-							if(acp.hasCeiling() || !p.isOnGround() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
+							if(acp.hasCeiling() || !p.isOnGround() || p.isInsideVehicle() || p.getFireTicks() > 0 || p.isFlying() || acp.isInWeb() || acp.isInWater() || p.isDead() || p.getGameMode().equals(GameMode.CREATIVE))return;
 
 							
 							final int ticksToReact = (int) (1.5*20);//ticks for the client to get up
