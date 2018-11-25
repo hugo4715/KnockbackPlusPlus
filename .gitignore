@@ -54,4 +54,6 @@ target/
 lib/
 *.jar
 .class
+.idea
+*.iml
 
