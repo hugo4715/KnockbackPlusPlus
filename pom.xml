@@ -21,6 +21,11 @@
 			<id>inventive-repo</id>
 			<url>http://repo.inventivetalent.org/content/groups/public/</url>
 		</repository>
+
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 
 	<!-- Dependencies -->
@@ -41,9 +46,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>tk.hugo4715.packethook</groupId>
-			<artifactId>PacketHook</artifactId>
-			<version>1.0</version>
+			<groupId>com.github.hugo4715</groupId>
+			<artifactId>SmallProtocol</artifactId>
+			<version>-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
