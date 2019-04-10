@@ -1,4 +1,6 @@
 name: KnockbackPlusPlus
-version: 1.6
+version: ${project.version}
 main: tk.hugo4715.anticheat.KbPlus
 author: hugo4715
+softdepend:
+  - ProtocolLib
