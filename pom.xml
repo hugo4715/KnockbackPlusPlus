@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tk.hugo4715.knockbackplusplus</groupId>
 	<artifactId>knockbackplusplus</artifactId>
-	<version>1.6</version>
+	<version>1.7</version>
 	<name>knockbackplusplus</name>
 
 
@@ -26,6 +26,11 @@
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
+
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+		</repository>
 	</repositories>
 
 	<!-- Dependencies -->
@@ -46,9 +51,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.hugo4715</groupId>
-			<artifactId>SmallProtocol</artifactId>
-			<version>-SNAPSHOT</version>
+			<groupId>com.comphenix.protocol</groupId>
+			<artifactId>ProtocolLib-API</artifactId>
+			<version>LATEST</version>
 		</dependency>
 
 		<dependency>
@@ -59,6 +64,12 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

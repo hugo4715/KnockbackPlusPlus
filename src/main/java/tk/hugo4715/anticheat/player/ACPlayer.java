@@ -110,8 +110,6 @@ public class ACPlayer {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 			});
 			
-			KbPlus.get().getData().set("violations", KbPlus.get().getData().getInt("violations", 0)+1);
-			KbPlus.get().saveData();
 		}
 	}
 	
